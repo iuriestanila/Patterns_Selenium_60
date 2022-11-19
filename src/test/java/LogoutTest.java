@@ -1,41 +1,18 @@
 import com.coherent.training.selenium.stanila.base.pages.LogoutPage;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-public class LogoutTest {
-    public WebDriver driver = null;
-    LogoutPage logoutPage;
-    SoftAssert softAssert;
-
-    @BeforeMethod
-    public void setUp(){
-        if(driver == null){
-            System.setProperty("webdriver.chrome.driver", "C:\\Descarcate de mine\\" +
-                    "chromedriver_win32\\chromedriver.exe");
-            driver = new ChromeDriver();
-        }
-        logoutPage = new LogoutPage(driver);
-        softAssert = new SoftAssert();
-        driver.manage().window().maximize();
-        driver.get(logoutPage.getExpectedURL());
-    }
-
+public class LogoutTest extends BaseTest {
+    public static final String USERNAME_CREDENTIAL = "moraru.andy";
+    public static final String PASSWORD_CREDENTIAL = "RootRoot5?";
     @Test
     public void logoutTest(){
-        logoutPage.login(logoutPage.getUsernameCredential(), logoutPage.getPasswordCredential());
-        logoutPage.logout();
+        LogoutPage logoutPage = new LogoutPage(driver);
+        SoftAssert softAssert = new SoftAssert();
 
-        softAssert.assertEquals(logoutPage.getCurrentURL(), logoutPage.getExpectedURL());
+        logoutPage.logout(USERNAME_CREDENTIAL,PASSWORD_CREDENTIAL);
+
+        softAssert.assertTrue(logoutPage.textForAssertIsDisplayed(),"Text for Assert isn't displayed.");
         softAssert.assertAll();
-    }
-
-    @AfterMethod
-    public void tearDown() {
-        driver.quit();
-        driver = null;
     }
 }

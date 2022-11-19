@@ -1,61 +1,50 @@
 package com.coherent.training.selenium.stanila.base.pages;
-import com.coherent.training.selenium.stanila.base.pages.base.BaseClass;
+import com.coherent.training.selenium.stanila.base.pages.base.BasePage;
+import com.coherent.training.selenium.stanila.base.pages.wait.ExplicitWait;
 import lombok.SneakyThrows;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-public class LoginPage extends BaseClass {
+public class LoginPage extends BasePage {
     @FindBy(xpath = "//button[starts-with(@class,'Button2')]")
-    private WebElement LOGIN_CENTRAL_PAGE;
+    private WebElement loginFirst;
     @FindBy(xpath = "//input[@id='passp-field-login']")
-    private WebElement USERNAME;
+    private WebElement username;
     @FindBy(xpath = "//button[@id='passp:sign-in']")
-    private WebElement LOGIN_USERNAME;
+    private WebElement login;
     @FindBy(xpath = "//input[@id='passp-field-passwd']")
-    private WebElement PASSWORD;
-    @FindBy(xpath = "//button[@id='passp:sign-in']")
-    private WebElement LOGIN_PASSWORD;
+    private WebElement password;
     @FindBy(xpath = "//div[@data-key='view=react-main-buttons']//div//a[@role='button']")
-    private WebElement COMPOSE;
-    public static final String USERNAME_CREDENTIAL = "moraru.andy";
-    public static final String PASSWORD_CREDENTIAL = "RootRoot5?";
+    private WebElement compose;
+    public static final short TIMEOUT = 5;
     public static final String URL = "https://mail.yandex.com/";
 
-    public LoginPage() {
-        PageFactory.initElements(driver,this);
+    public LoginPage(WebDriver driver) {
+       super(driver);
     }
 
     @SneakyThrows
-    public void login(String username, String password){
-        LOGIN_CENTRAL_PAGE.click();
-        Thread.sleep(2000);
+    public void login(String usname, String pswd){
+        driver.get(URL);
+        loginFirst.click();
 
-        USERNAME.sendKeys(username);
-        Thread.sleep(2000);
+        ExplicitWait.visibilityOfElement(driver,username,TIMEOUT);
+        username.sendKeys(usname);
 
-        LOGIN_USERNAME.click();
-        Thread.sleep(2000);
+        ExplicitWait.visibilityOfElement(driver,login,TIMEOUT);
+        login.click();
 
-        PASSWORD.sendKeys(password);
-        Thread.sleep(2000);
+        ExplicitWait.visibilityOfElement(driver,password,TIMEOUT);
+        password.sendKeys(pswd);
 
-        LOGIN_PASSWORD.click();
-        Thread.sleep(3000);
+        ExplicitWait.visibilityOfElement(driver,login,5);
+        login.click();
+
+        ExplicitWait.visibilityOfElement(driver,compose,5);
     }
 
-    public String getUsernameCredential(){
-        return USERNAME_CREDENTIAL;
-    }
-
-    public String getPasswordCredential(){
-        return PASSWORD_CREDENTIAL;
-    }
-    public String getURL() {
-        return URL;
-    }
-
-    public WebElement getCOMPOSE() {
-        return COMPOSE;
+    public boolean composeIsDisplayed() {
+        return compose.isDisplayed();
     }
 }

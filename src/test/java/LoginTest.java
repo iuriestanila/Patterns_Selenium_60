@@ -1,26 +1,18 @@
 import com.coherent.training.selenium.stanila.base.pages.LoginPage;
-import com.coherent.training.selenium.stanila.base.pages.base.BaseClass;
-import org.testng.annotations.AfterMethod;;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-public class LoginTest extends BaseClass {
-    LoginPage loginPage;
-    SoftAssert softAssert;
-
+public class LoginTest extends BaseTest {
+    public static final String USERNAME_CREDENTIAL = "moraru.andy";
+    public static final String PASSWORD_CREDENTIAL = "RootRoot5?";
     @Test
     public void loginTest(){
-        loginPage = new LoginPage();
-        softAssert = new SoftAssert();
-        loginPage.login(loginPage.getUsernameCredential(),loginPage.getPasswordCredential());
+        SoftAssert softAssert = new SoftAssert();
+        LoginPage loginPage = new LoginPage(driver);
 
-        softAssert.assertTrue(loginPage.getCOMPOSE().isEnabled());
+        loginPage.login(USERNAME_CREDENTIAL,PASSWORD_CREDENTIAL);
+
+        softAssert.assertTrue(loginPage.composeIsDisplayed(),"Compose button isn't displayed.");
         softAssert.assertAll();
-    }
-
-    @AfterMethod
-    public void tearDown() {
-        driver.quit();
-        driver = null;
     }
 }
